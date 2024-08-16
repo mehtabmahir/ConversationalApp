@@ -1,10 +1,19 @@
-import axios from 'axios'
-
 // Replace with your API key
-const apiKey = process.env.REACT_APP_TTS_API_KEY;
+async function getApiKey() {
+    try {
+        const response = await fetch('http://localhost:3000/speech-api-key');
+        const data = await response.json();
+        return data.key;
+    } catch (error) {
+        console.error('Error fetching API key:', error);
+        throw error;
+    }
+}
+
 
 // Function to synthesize speech
-export async function synthesizeSpeech(text) {
+window.synthesizeSpeech = async function(text) {
+    const apiKey = await getApiKey();
     const url = 'https://texttospeech.googleapis.com/v1/text:synthesize';
     
     // Construct the request payload
@@ -52,5 +61,3 @@ function playMp3FromBase64(base64String) {
     document.body.appendChild(audioElement); // Add the audio element to the DOM
     audioElement.play();
 }
-
-// Example usage

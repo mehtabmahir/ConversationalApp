@@ -237,11 +237,11 @@ class ConversationalAppEngineClient {
             responseMessage += '<div class="message-footer">' + showPreviewButton + '</div>';
         }
 
-        if (isNew && "speechSynthesis" in window && response.message) {
+        if (isNew && typeof synthesizeSpeech === 'function' && response.message) {
             const parsedHtml = new DOMParser().parseFromString(response.message, "text/html");
             const text = parsedHtml.body.textContent || parsedHtml.body.innerText || "";
-            if(text.trim()) {
-                speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+            if (text.trim()) {
+                synthesizeSpeech(text); 
             }
         } else {
             console.log("Text to Speech Not Available");

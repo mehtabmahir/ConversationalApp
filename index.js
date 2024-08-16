@@ -68,6 +68,22 @@ app.get('/', (req, res) => {
     });
 });
 
+app.get('/speech-api-key', (req, res) => {
+    res.json({ key: process.env.REACT_APP_TTS_API_KEY});
+})
+
+app.get('/tts.js', (req, res) => {
+    fs.readFile('client/tts.js', (err, data) => {
+        if (err) {
+            res.writeHead(500, { 'Content-Type': 'text/html' });
+            res.end('Error loading the file');
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/javascript' });
+            res.end(data);
+        }
+    })
+})
+
 app.get('/script.js', (req, res) => {
     const appName = getAppNameFromRequest(req);
     fs.readFile('client/script.js', (err, data) => {
